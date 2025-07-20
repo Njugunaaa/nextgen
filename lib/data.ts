@@ -1,8 +1,47 @@
-// Simple data file for our food court app
+// Data file for our food court app
 // This contains all the restaurant and menu information
 
+// Interface definitions
+export interface Dish {
+  id: string;
+  name: string;
+  price: number;
+  description: string;
+  isPopular?: boolean;
+}
+
+export interface Restaurant {
+  id: string;
+  name: string;
+  cuisine: string;
+  description: string;
+  image: string;
+  dishes: Dish[];
+}
+
+export interface Cuisine {
+  name: string;
+  image: string;
+}
+
+export interface Table {
+  id: string;
+  number: number;
+  capacity: number;
+  status: 'available' | 'reserved' | 'occupied';
+}
+
+export interface Review {
+  id: string;
+  customerName: string;
+  outlet: string;
+  rating: number;
+  comment: string;
+  date: string;
+}
+
 // All our restaurants with their menus
-export const restaurants = [
+export const restaurants: Restaurant[] = [
   {
     id: '1',
     name: 'Tamu Tamu Grills',
@@ -78,7 +117,7 @@ export const restaurants = [
 ];
 
 // Different types of cuisines available
-export const cuisines = [
+export const cuisines: Cuisine[] = [
   { name: 'Coastal', image: 'https://images.pexels.com/photos/1633578/pexels-photo-1633578.jpeg?auto=compress&cs=tinysrgb&w=400' },
   { name: 'Indian', image: 'https://images.pexels.com/photos/1624487/pexels-photo-1624487.jpeg?auto=compress&cs=tinysrgb&w=400' },
   { name: 'Chinese', image: 'https://images.pexels.com/photos/1410235/pexels-photo-1410235.jpeg?auto=compress&cs=tinysrgb&w=400' },
@@ -89,7 +128,7 @@ export const cuisines = [
 ];
 
 // Tables available for reservation
-export const tables = [
+export const tables: Table[] = [
   { id: '1', number: 1, capacity: 4, status: 'available' },
   { id: '2', number: 2, capacity: 6, status: 'available' },
   { id: '3', number: 3, capacity: 4, status: 'available' },
@@ -103,7 +142,7 @@ export const tables = [
 ];
 
 // Sample customer reviews
-export const initialReviews = [
+export const reviews: Review[] = [
   {
     id: '1',
     customerName: 'John Mwangi',
