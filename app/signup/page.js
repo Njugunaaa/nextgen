@@ -5,7 +5,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 
 export default function Signup() {
-  // State for form data
+  // Simple state for form data
   const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',
@@ -16,8 +16,8 @@ export default function Signup() {
     userType: 'user'
   });
 
-  // Handle form submission
-  const handleSubmit = (e: React.FormEvent) => {
+  // Handle form submission - simple and clear
+  const handleSubmit = (e) => {
     e.preventDefault();
     
     // Validate required fields
@@ -49,6 +49,7 @@ export default function Signup() {
       localStorage.setItem('userType', 'customer');
       localStorage.setItem('userName', `${formData.firstName} ${formData.lastName}`);
       alert(`User account created for: ${formData.firstName} ${formData.lastName}\nEmail: ${formData.email}\n\nNote: This is a demo - no actual account is created.`);
+      window.location.href = '/';
     }
   };
 
@@ -92,7 +93,7 @@ export default function Signup() {
                   onClick={() => setFormData({ ...formData, userType: 'user' })}
                   className={`p-4 border-2 rounded-lg text-center transition-colors ${
                     formData.userType === 'user' 
-                      ? 'border-amber-500 bg-amber-50 text-amber-700' 
+                      ? 'border-orange-500 bg-orange-50 text-orange-700' 
                       : 'border-gray-300 hover:border-gray-400'
                   }`}
                 >
@@ -104,7 +105,7 @@ export default function Signup() {
                   onClick={() => setFormData({ ...formData, userType: 'owner' })}
                   className={`p-4 border-2 rounded-lg text-center transition-colors ${
                     formData.userType === 'owner' 
-                      ? 'border-amber-500 bg-amber-50 text-amber-700' 
+                      ? 'border-orange-500 bg-orange-50 text-orange-700' 
                       : 'border-gray-300 hover:border-gray-400'
                   }`}
                 >
@@ -124,7 +125,7 @@ export default function Signup() {
                   type="text"
                   value={formData.firstName}
                   onChange={(e) => setFormData({ ...formData, firstName: e.target.value })}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-amber-500 focus:border-transparent"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-orange-500 focus:border-transparent"
                   placeholder="John"
                   required
                 />
@@ -137,7 +138,7 @@ export default function Signup() {
                   type="text"
                   value={formData.lastName}
                   onChange={(e) => setFormData({ ...formData, lastName: e.target.value })}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-amber-500 focus:border-transparent"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-orange-500 focus:border-transparent"
                   placeholder="Doe"
                   required
                 />
@@ -153,7 +154,7 @@ export default function Signup() {
                 type="email"
                 value={formData.email}
                 onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-amber-500 focus:border-transparent"
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-orange-500 focus:border-transparent"
                 placeholder="john@example.com"
                 required
               />
@@ -168,7 +169,7 @@ export default function Signup() {
                 type="tel"
                 value={formData.phone}
                 onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-amber-500 focus:border-transparent"
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-orange-500 focus:border-transparent"
                 placeholder="+254 700 000 000"
               />
             </div>
@@ -182,7 +183,7 @@ export default function Signup() {
                 type="password"
                 value={formData.password}
                 onChange={(e) => setFormData({ ...formData, password: e.target.value })}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-amber-500 focus:border-transparent"
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-orange-500 focus:border-transparent"
                 placeholder="Minimum 6 characters"
                 required
                 minLength={6}
@@ -197,7 +198,7 @@ export default function Signup() {
                 type="password"
                 value={formData.confirmPassword}
                 onChange={(e) => setFormData({ ...formData, confirmPassword: e.target.value })}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-amber-500 focus:border-transparent"
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-orange-500 focus:border-transparent"
                 placeholder="Repeat your password"
                 required
               />
@@ -207,18 +208,18 @@ export default function Signup() {
             <div className="flex items-center">
               <input
                 type="checkbox"
-                className="h-4 w-4 text-amber-600 focus:ring-amber-500 border-gray-300 rounded"
+                className="h-4 w-4 text-orange-600 focus:ring-orange-500 border-gray-300 rounded"
                 required
               />
               <label className="ml-2 block text-sm text-gray-700">
-                I agree to the <button type="button" className="text-amber-600 hover:text-amber-500">Terms of Service</button> and <button type="button" className="text-amber-600 hover:text-amber-500">Privacy Policy</button>
+                I agree to the <button type="button" className="text-orange-600 hover:text-orange-500">Terms of Service</button> and <button type="button" className="text-orange-600 hover:text-orange-500">Privacy Policy</button>
               </label>
             </div>
 
             {/* Submit Button */}
             <button
               type="submit"
-              className="w-full bg-amber-500 text-white py-3 px-4 rounded-md hover:bg-amber-600 focus:ring-2 focus:ring-amber-500 focus:ring-offset-2 transition-colors font-medium"
+              className="w-full bg-orange-500 text-white py-3 px-4 rounded-md hover:bg-orange-600 focus:ring-2 focus:ring-orange-500 focus:ring-offset-2 transition-colors font-medium"
             >
               Create {formData.userType === 'owner' ? 'Owner' : 'Customer'} Account
             </button>
@@ -228,7 +229,7 @@ export default function Signup() {
           <div className="mt-6 text-center">
             <p className="text-sm text-gray-600">
               Already have an account?{' '}
-              <Link href="/login" className="text-amber-600 hover:text-amber-500 font-medium">
+              <Link href="/login" className="text-orange-600 hover:text-orange-500 font-medium">
                 Sign in here
               </Link>
             </p>

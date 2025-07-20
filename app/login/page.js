@@ -4,14 +4,14 @@ import { useState } from 'react';
 import Link from 'next/link';
 
 export default function Login() {
-  // State for form data
+  // Simple state for form data
   const [formData, setFormData] = useState({
     email: '',
     password: ''
   });
 
-  // Handle form submission
-  const handleSubmit = (e: React.FormEvent) => {
+  // Handle form submission - simple and clear
+  const handleSubmit = (e) => {
     e.preventDefault();
     
     // Check if all fields are filled
@@ -31,6 +31,7 @@ export default function Login() {
       localStorage.setItem('userType', 'customer');
       localStorage.setItem('userName', 'Customer');
       alert(`Login successful!\n\nNote: This is a demo - no actual authentication is implemented.`);
+      window.location.href = '/';
     }
   };
 
@@ -54,7 +55,7 @@ export default function Login() {
               type="email"
               value={formData.email}
               onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-amber-500 focus:border-transparent"
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-orange-500 focus:border-transparent"
               placeholder="Enter your email"
               required
             />
@@ -69,7 +70,7 @@ export default function Login() {
               type="password"
               value={formData.password}
               onChange={(e) => setFormData({ ...formData, password: e.target.value })}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-amber-500 focus:border-transparent"
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-orange-500 focus:border-transparent"
               placeholder="Enter your password"
               required
             />
@@ -80,13 +81,13 @@ export default function Login() {
             <div className="flex items-center">
               <input
                 type="checkbox"
-                className="h-4 w-4 text-amber-600 focus:ring-amber-500 border-gray-300 rounded"
+                className="h-4 w-4 text-orange-600 focus:ring-orange-500 border-gray-300 rounded"
               />
               <label className="ml-2 block text-sm text-gray-700">
                 Remember me
               </label>
             </div>
-            <button type="button" className="text-sm text-amber-600 hover:text-amber-500">
+            <button type="button" className="text-sm text-orange-600 hover:text-orange-500">
               Forgot password?
             </button>
           </div>
@@ -94,7 +95,7 @@ export default function Login() {
           {/* Submit Button */}
           <button
             type="submit"
-            className="w-full bg-amber-500 text-white py-2 px-4 rounded-md hover:bg-amber-600 focus:ring-2 focus:ring-amber-500 focus:ring-offset-2 transition-colors"
+            className="w-full bg-orange-500 text-white py-2 px-4 rounded-md hover:bg-orange-600 focus:ring-2 focus:ring-orange-500 focus:ring-offset-2 transition-colors"
           >
             Sign In
           </button>
@@ -104,33 +105,18 @@ export default function Login() {
         <div className="mt-6 text-center">
           <p className="text-sm text-gray-600">
             Don't have an account?{' '}
-            <Link href="/signup" className="text-amber-600 hover:text-amber-500 font-medium">
+            <Link href="/signup" className="text-orange-600 hover:text-orange-500 font-medium">
               Sign up here
             </Link>
           </p>
         </div>
 
-        {/* Social Login Options */}
-        <div className="mt-8 pt-6 border-t border-gray-200">
-          <div className="text-center">
-            <p className="text-xs text-gray-500 mb-4">Or continue with</p>
-            <div className="grid grid-cols-2 gap-3">
-              <button className="flex items-center justify-center px-4 py-2 border border-gray-300 rounded-md hover:bg-gray-50 transition-colors">
-                <span className="text-sm font-medium text-gray-700">Google</span>
-              </button>
-              <button className="flex items-center justify-center px-4 py-2 border border-gray-300 rounded-md hover:bg-gray-50 transition-colors">
-                <span className="text-sm font-medium text-gray-700">Facebook</span>
-              </button>
-            </div>
-          </div>
+        {/* Demo Notice */}
+        <div className="mt-8 text-center">
+          <p className="text-sm text-gray-500">
+            ⚠️ This is a demo application. No actual authentication is implemented.
+          </p>
         </div>
-      </div>
-
-      {/* Demo Notice */}
-      <div className="mt-8 text-center">
-        <p className="text-sm text-gray-500">
-          ⚠️ This is a demo application. No actual authentication is implemented.
-        </p>
       </div>
     </div>
   );

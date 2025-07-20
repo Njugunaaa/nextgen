@@ -1,13 +1,13 @@
 'use client';
 
 import { useState } from 'react';
-import { reviews, restaurants } from '@/lib/data';
+import { initialReviews, restaurants } from '../../data/restaurants';
 
 export default function Reviews() {
-  // State to manage all reviews (starting with initial reviews)
-  const [allReviews, setAllReviews] = useState(reviews);
+  // Simple state to manage all reviews (starting with initial reviews)
+  const [allReviews, setAllReviews] = useState(initialReviews);
   
-  // State for new review form
+  // State for new review form - simple object
   const [newReview, setNewReview] = useState({
     customerName: '',
     outlet: '',
@@ -15,11 +15,11 @@ export default function Reviews() {
     comment: ''
   });
 
-  // Check if user is logged in
+  // Check if user is logged in - simple check
   const isLoggedIn = typeof window !== 'undefined' && localStorage.getItem('userType');
 
   // Handle review form submission
-  const handleSubmitReview = (e: React.FormEvent) => {
+  const handleSubmitReview = (e) => {
     e.preventDefault();
     
     // Check if user is logged in
@@ -50,7 +50,7 @@ export default function Reviews() {
     // Show success message
     alert(`Review submitted successfully!\n\nThank you for your feedback!`);
     
-    // Reset form
+    // Reset form to empty values
     setNewReview({
       customerName: '',
       outlet: '',
@@ -59,8 +59,8 @@ export default function Reviews() {
     });
   };
 
-  // Function to render star ratings
-  const renderStars = (rating: number, interactive = false, onRate?: (rating: number) => void) => {
+  // Function to render star ratings - simple and clear
+  const renderStars = (rating, interactive = false, onRate) => {
     return (
       <div className="flex">
         {[1, 2, 3, 4, 5].map((star) => (

@@ -2,13 +2,13 @@
 
 import { useState, useEffect } from 'react';
 import { useSearchParams } from 'next/navigation';
-import { restaurants, cuisines } from '@/lib/data';
+import { restaurants, cuisines } from '../../data/restaurants';
 
 export default function BrowseCuisines() {
   const searchParams = useSearchParams();
   const cuisineParam = searchParams.get('cuisine'); // Get cuisine from URL
   
-  // State variables
+  // Simple state variables - easy to understand
   const [selectedCuisine, setSelectedCuisine] = useState(cuisineParam || '');
   const [selectedRestaurant, setSelectedRestaurant] = useState('');
   const [searchTerm, setSearchTerm] = useState('');

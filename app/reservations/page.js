@@ -1,34 +1,23 @@
 'use client';
 
 import { useState } from 'react';
-import { tables } from '@/lib/data';
-
-// Interface for reservation data
-interface Reservation {
-  id: string;
-  tableId: string;
-  customerName: string;
-  date: string;
-  time: string;
-  guestCount: number;
-  status: 'confirmed' | 'pending' | 'cancelled';
-}
+import { tables } from '../../data/restaurants';
 
 export default function Reservations() {
-  // State variables
+  // Simple state variables - easy to understand
   const [selectedTable, setSelectedTable] = useState('');
   const [reservationDate, setReservationDate] = useState('');
   const [reservationTime, setReservationTime] = useState('');
   const [customerName, setCustomerName] = useState('');
   const [guestCount, setGuestCount] = useState(1);
-  const [reservations, setReservations] = useState<Reservation[]>([]);
-  const [showReservations, setShowReservations] = useState(false);
-  const [reservedTables, setReservedTables] = useState<string[]>([]);
+  const [reservations, setReservations] = useState([]); // List of all reservations
+  const [showReservations, setShowReservations] = useState(false); // Toggle between tabs
+  const [reservedTables, setReservedTables] = useState([]); // Track which tables are reserved
 
-  // Check if user is logged in
+  // Check if user is logged in - simple check
   const isLoggedIn = typeof window !== 'undefined' && localStorage.getItem('userType');
 
-  // Show login message if user is not logged in
+  // If user is not logged in, show login message
   if (!isLoggedIn) {
     return (
       <div className="text-center py-12">
@@ -48,11 +37,11 @@ export default function Reservations() {
 
   // Get available tables (not reserved by customers)
   const availableTables = tables.filter(table => 
-    table.status === 'available' && !reservedTables.includes(table.id)
+    !reservedTables.includes(table.id)
   );
 
   // Handle reservation form submission
-  const handleReservation = (e: React.FormEvent) => {
+  const handleReservation = (e) => {
     e.preventDefault();
     
     // Check if all required fields are filled
@@ -64,9 +53,9 @@ export default function Reservations() {
     // Find the selected table info
     const selectedTableInfo = tables.find(t => t.id === selectedTable);
     
-    // Create new reservation
-    const newReservation: Reservation = {
-      id: Date.now().toString(), // Simple ID generation
+    // Create new reservation object
+    const newReservation = {
+      id: Date.now().toString(), // Simple ID using timestamp
       tableId: selectedTable,
       customerName,
       date: reservationDate,
@@ -82,7 +71,7 @@ export default function Reservations() {
     // Show success message
     alert(`Table reserved successfully!\n\nTable: ${selectedTableInfo?.number}\nDate: ${reservationDate}\nTime: ${reservationTime}\nGuests: ${guestCount}`);
     
-    // Reset form
+    // Reset form to empty values
     setSelectedTable('');
     setReservationDate('');
     setReservationTime('');
@@ -91,7 +80,7 @@ export default function Reservations() {
   };
 
   // Cancel a reservation
-  const cancelReservation = (reservationId: string) => {
+  const cancelReservation = (reservationId) => {
     const reservation = reservations.find(res => res.id === reservationId);
     if (reservation) {
       // Update reservation status to cancelled
@@ -100,13 +89,13 @@ export default function Reservations() {
           ? { ...res, status: 'cancelled' }
           : res
       ));
-      // Free up the table
+      // Free up the table so others can book it
       setReservedTables(reservedTables.filter(tableId => tableId !== reservation.tableId));
     }
   };
 
-  // Get table number from table ID
-  const getTableNumber = (tableId: string) => {
+  // Get table number from table ID - helper function
+  const getTableNumber = (tableId) => {
     const table = tables.find(t => t.id === tableId);
     return table?.number || 'Unknown';
   };
@@ -122,7 +111,7 @@ export default function Reservations() {
           Reserve a shared table in our food court for your dining experience
         </p>
         
-        {/* Tab Navigation */}
+        {/* Tab Navigation - Switch between making reservation and viewing reservations */}
         <div className="mt-6 flex gap-4">
           <button
             onClick={() => setShowReservations(false)}
@@ -159,13 +148,13 @@ export default function Reservations() {
                 <div 
                   key={table.id} 
                   className={`p-4 border-2 rounded-lg cursor-pointer transition-colors ${
-                    table.status === 'reserved' || reservedTables.includes(table.id)
+                    reservedTables.includes(table.id)
                       ? 'border-red-200 bg-red-50' 
                       : selectedTable === table.id
                       ? 'border-amber-500 bg-amber-50'
                       : 'border-gray-200 hover:border-gray-300'
                   }`}
-                  onClick={() => table.status === 'available' && !reservedTables.includes(table.id) && setSelectedTable(table.id)}
+                  onClick={() => !reservedTables.includes(table.id) && setSelectedTable(table.id)}
                 >
                   <div className="flex items-center justify-between">
                     <div>
@@ -177,11 +166,11 @@ export default function Reservations() {
                       </p>
                     </div>
                     <span className={`px-4 py-2 rounded-full text-lg font-semibold ${
-                      table.status === 'available' && !reservedTables.includes(table.id)
+                      !reservedTables.includes(table.id)
                         ? 'bg-green-100 text-green-800' 
                         : 'bg-red-100 text-red-800'
                     }`}>
-                      {table.status === 'available' && !reservedTables.includes(table.id) ? 'Available' : 'Reserved'}
+                      {!reservedTables.includes(table.id) ? 'Available' : 'Reserved'}
                     </span>
                   </div>
                 </div>

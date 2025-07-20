@@ -5,56 +5,41 @@ import { usePathname } from 'next/navigation';
 import { useState, useEffect } from 'react';
 import { ShoppingCart, Moon, Sun, Utensils } from 'lucide-react';
 
-export default function Navigation() {
+export default function Header() {
   const pathname = usePathname();
-  const [isOwnerLoggedIn, setIsOwnerLoggedIn] = useState(false);
+  
+  // State to track user login status and cart
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isOwner, setIsOwner] = useState(false);
   const [cartCount, setCartCount] = useState(0);
   const [isDarkMode, setIsDarkMode] = useState(false);
 
-  const navItems = [
-    { href: '/', label: 'Home' },
-    { href: '/order', label: 'Orders' },
-    { href: '/reservations', label: 'Reservations' },
-  ];
-
+  // Check login status when component loads
   useEffect(() => {
-    // Check if user is logged in as owner (only runs on client-side)
-    const userType = localStorage.getItem('userType');
-    setIsOwnerLoggedIn(userType === 'owner');
-    setIsLoggedIn(!!userType);
-    
-    // Load cart count
-    const savedCart = localStorage.getItem('foodCourtCart');
-    if (savedCart) {
-      const cart = JSON.parse(savedCart);
-      const totalItems = cart.reduce((sum: number, item: any) => sum + item.quantity, 0);
-      setCartCount(totalItems);
-    }
-    
-    // Load dark mode preference
-    const darkMode = localStorage.getItem('darkMode') === 'true';
-    setIsDarkMode(darkMode);
-    if (darkMode) {
-      document.documentElement.classList.add('dark');
-    }
-    
-    // Listen for cart updates
-    const handleStorageChange = () => {
+    // Only run this code in the browser (not on server)
+    if (typeof window !== 'undefined') {
+      const userType = localStorage.getItem('userType');
+      setIsLoggedIn(!!userType);
+      setIsOwner(userType === 'owner');
+      
+      // Load cart count from localStorage
       const savedCart = localStorage.getItem('foodCourtCart');
       if (savedCart) {
         const cart = JSON.parse(savedCart);
         const totalItems = cart.reduce((sum: number, item: any) => sum + item.quantity, 0);
         setCartCount(totalItems);
-      } else {
-        setCartCount(0);
       }
-    };
-    
-    window.addEventListener('storage', handleStorageChange);
-    return () => window.removeEventListener('storage', handleStorageChange);
+      
+      // Load dark mode preference
+      const darkMode = localStorage.getItem('darkMode') === 'true';
+      setIsDarkMode(darkMode);
+      if (darkMode) {
+        document.documentElement.classList.add('dark');
+      }
+    }
   }, []);
-  
+
+  // Function to toggle dark mode
   const toggleDarkMode = () => {
     const newDarkMode = !isDarkMode;
     setIsDarkMode(newDarkMode);
@@ -67,10 +52,19 @@ export default function Navigation() {
     }
   };
 
+  // Navigation menu items
+  const navItems = [
+    { href: '/', label: 'Home' },
+    { href: '/order', label: 'Orders' },
+    { href: '/reservations', label: 'Reservations' },
+    { href: '/signup', label: 'Sign Up' },
+  ];
+
   return (
     <nav className="bg-white dark:bg-gray-900 shadow-lg border-b border-gray-200 dark:border-gray-700 sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-4">
         <div className="flex justify-between items-center h-18">
+          {/* Logo */}
           <Link href="/" className="flex items-center space-x-3">
             <div className="bg-gradient-to-r from-orange-500 to-red-500 p-2 rounded-full">
               <Utensils className="w-8 h-8 text-white" />
@@ -80,6 +74,7 @@ export default function Navigation() {
             </span>
           </Link>
           
+          {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-8">
             {navItems.map((item) => (
               <Link
@@ -94,17 +89,6 @@ export default function Navigation() {
                 {item.label}
               </Link>
             ))}
-            
-            <Link
-              href="/signup"
-              className={`text-lg font-semibold transition-all duration-300 hover:text-orange-600 dark:hover:text-orange-400 hover:scale-105 ${
-                pathname === '/signup' 
-                  ? 'text-orange-600 dark:text-orange-400 border-b-2 border-orange-600 dark:border-orange-400' 
-                  : 'text-gray-700 dark:text-gray-300'
-              }`}
-            >
-              Sign Up
-            </Link>
             
             {/* Cart Icon */}
             <Link
@@ -127,7 +111,8 @@ export default function Navigation() {
               {isDarkMode ? <Sun className="w-6 h-6" /> : <Moon className="w-6 h-6" />}
             </button>
             
-            {isOwnerLoggedIn && (
+            {/* Owner Dashboard Link (only show if logged in as owner) */}
+            {isOwner && (
               <Link
                 href="/owner-dashboard"
                 className={`text-lg font-semibold transition-all duration-300 hover:text-orange-600 dark:hover:text-orange-400 hover:scale-105 ${
@@ -141,6 +126,7 @@ export default function Navigation() {
             )}
           </div>
 
+          {/* Mobile Navigation */}
           <div className="md:hidden flex items-center space-x-4">
             {/* Mobile Cart */}
             <Link
@@ -163,6 +149,7 @@ export default function Navigation() {
               {isDarkMode ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
             </button>
             
+            {/* Mobile Menu Dropdown */}
             <select
               onChange={(e) => window.location.href = e.target.value}
               value={pathname}
@@ -173,10 +160,9 @@ export default function Navigation() {
                   {item.label}
                 </option>
               ))}
-              {isOwnerLoggedIn && (
+              {isOwner && (
                 <option value="/owner-dashboard">Dashboard</option>
               )}
-              <option value="/signup">Sign Up</option>
             </select>
           </div>
         </div>

@@ -2,33 +2,24 @@
 
 import { useState, useEffect } from 'react';
 import { useSearchParams } from 'next/navigation';
-import { restaurants } from '@/lib/data';
-
-// Interface for items in the cart
-interface OrderItem {
-  dishId: string;
-  name: string;
-  price: number;
-  quantity: number;
-  notes: string;
-}
+import { restaurants } from '../../data/restaurants';
 
 export default function Order() {
   const searchParams = useSearchParams();
   const outletId = searchParams.get('outlet'); // Get restaurant ID from URL
   
-  // State variables
+  // Simple state variables - easy to understand
   const [selectedOutlet, setSelectedOutlet] = useState(outletId || '');
-  const [orderItems, setOrderItems] = useState<OrderItem[]>([]);
+  const [orderItems, setOrderItems] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   
-  // Find the selected restaurant
+  // Find the selected restaurant from our data
   const selectedRestaurant = restaurants.find(r => r.id === selectedOutlet);
 
-  // Check if user is logged in
+  // Check if user is logged in - simple check
   const isLoggedIn = typeof window !== 'undefined' && localStorage.getItem('userType');
 
-  // Show login message if user is not logged in
+  // If user is not logged in, show login message
   if (!isLoggedIn) {
     return (
       <div className="text-center py-12">
@@ -46,25 +37,26 @@ export default function Order() {
     );
   }
 
-  // Filter dishes based on search term
+  // Filter dishes based on what user types in search
   const filteredDishes = selectedRestaurant?.dishes.filter(dish =>
     dish.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
     dish.description.toLowerCase().includes(searchTerm.toLowerCase())
   ) || [];
 
-  // Function to add item to cart
-  const addToOrder = (dishId: string, name: string, price: number) => {
+  // Function to add item to order - simple and clear
+  const addToOrder = (dishId, name, price) => {
+    // Check if item is already in order
     const existingItem = orderItems.find(item => item.dishId === dishId);
     
     if (existingItem) {
-      // If item already exists, increase quantity
+      // If item exists, increase quantity by 1
       setOrderItems(orderItems.map(item =>
         item.dishId === dishId 
           ? { ...item, quantity: item.quantity + 1 }
           : item
       ));
     } else {
-      // Add new item to cart
+      // If new item, add it to order
       setOrderItems([...orderItems, {
         dishId,
         name,
@@ -75,13 +67,13 @@ export default function Order() {
     }
   };
 
-  // Function to update item quantity
-  const updateQuantity = (dishId: string, quantity: number) => {
+  // Function to update quantity of items
+  const updateQuantity = (dishId, quantity) => {
     if (quantity === 0) {
-      // Remove item if quantity is 0
+      // Remove item if quantity becomes 0
       setOrderItems(orderItems.filter(item => item.dishId !== dishId));
     } else {
-      // Update quantity
+      // Update the quantity
       setOrderItems(orderItems.map(item =>
         item.dishId === dishId 
           ? { ...item, quantity }
@@ -90,8 +82,8 @@ export default function Order() {
     }
   };
 
-  // Function to update item notes
-  const updateNotes = (dishId: string, notes: string) => {
+  // Function to update special notes for items
+  const updateNotes = (dishId, notes) => {
     setOrderItems(orderItems.map(item =>
       item.dishId === dishId 
         ? { ...item, notes }
@@ -99,18 +91,30 @@ export default function Order() {
     ));
   };
 
-  // Calculate total price
+  // Calculate total price - simple math
   const getTotalPrice = () => {
     return orderItems.reduce((total, item) => total + (item.price * item.quantity), 0);
   };
 
-  // Handle checkout
+  // Handle checkout button click
   const handleCheckout = () => {
     if (orderItems.length === 0) {
       alert('Please add items to your order first!');
       return;
     }
-    alert(`Order submitted! Total: KSh ${getTotalPrice().toLocaleString()}\n\nNote: Payment functionality not implemented yet.`);
+    
+    // Save order to browser storage and redirect to checkout
+    localStorage.setItem('foodCourtCart', JSON.stringify(orderItems.map(item => ({
+      dishId: item.dishId,
+      name: item.name,
+      price: item.price,
+      quantity: item.quantity,
+      restaurantName: selectedRestaurant.name,
+      notes: item.notes
+    }))));
+    
+    // Redirect to checkout page
+    window.location.href = '/checkout';
   };
 
   return (
@@ -147,7 +151,7 @@ export default function Order() {
             </select>
           </div>
 
-          {/* Search Bar (only show if restaurant is selected) */}
+          {/* Search Bar - only show if restaurant is selected */}
           {selectedRestaurant && (
             <div className="mb-6">
               <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
