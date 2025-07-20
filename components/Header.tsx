@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useState, useEffect } from 'react';
-import { ShoppingCart, Moon, Sun, Utensils } from 'lucide-react';
+import { ShoppingCart, Utensils } from 'lucide-react';
 
 export default function Header() {
   const pathname = usePathname();
@@ -12,7 +12,6 @@ export default function Header() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isOwner, setIsOwner] = useState(false);
   const [cartCount, setCartCount] = useState(0);
-  const [isDarkMode, setIsDarkMode] = useState(false);
 
   // Check login status when component loads
   useEffect(() => {
@@ -29,28 +28,8 @@ export default function Header() {
         const totalItems = cart.reduce((sum: number, item: any) => sum + item.quantity, 0);
         setCartCount(totalItems);
       }
-      
-      // Load dark mode preference
-      const darkMode = localStorage.getItem('darkMode') === 'true';
-      setIsDarkMode(darkMode);
-      if (darkMode) {
-        document.documentElement.classList.add('dark');
-      }
     }
   }, []);
-
-  // Function to toggle dark mode
-  const toggleDarkMode = () => {
-    const newDarkMode = !isDarkMode;
-    setIsDarkMode(newDarkMode);
-    localStorage.setItem('darkMode', newDarkMode.toString());
-    
-    if (newDarkMode) {
-      document.documentElement.classList.add('dark');
-    } else {
-      document.documentElement.classList.remove('dark');
-    }
-  };
 
   // Navigation menu items
   const navItems = [
@@ -61,7 +40,7 @@ export default function Header() {
   ];
 
   return (
-    <nav className="bg-white dark:bg-gray-900 shadow-lg border-b border-gray-200 dark:border-gray-700 sticky top-0 z-50">
+    <nav className="bg-white shadow-lg border-b border-gray-200 sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-4">
         <div className="flex justify-between items-center h-18">
           {/* Logo */}
@@ -80,10 +59,10 @@ export default function Header() {
               <Link
                 key={item.href}
                 href={item.href}
-                className={`text-lg font-semibold transition-all duration-300 hover:text-orange-600 dark:hover:text-orange-400 hover:scale-105 ${
+                className={`text-lg font-semibold transition-all duration-300 hover:text-orange-600 hover:scale-105 ${
                   pathname === item.href 
-                    ? 'text-orange-600 dark:text-orange-400 border-b-2 border-orange-600 dark:border-orange-400' 
-                    : 'text-gray-700 dark:text-gray-300'
+                    ? 'text-orange-600 border-b-2 border-orange-600' 
+                    : 'text-gray-700'
                 }`}
               >
                 {item.label}
@@ -93,7 +72,7 @@ export default function Header() {
             {/* Cart Icon */}
             <Link
               href="/checkout"
-              className="relative p-2 text-gray-700 dark:text-gray-300 hover:text-orange-600 dark:hover:text-orange-400 transition-colors"
+              className="relative p-2 text-gray-700 hover:text-orange-600 transition-colors"
             >
               <ShoppingCart className="w-6 h-6" />
               {cartCount > 0 && (
@@ -103,22 +82,14 @@ export default function Header() {
               )}
             </Link>
             
-            {/* Dark Mode Toggle */}
-            <button
-              onClick={toggleDarkMode}
-              className="p-2 text-gray-700 dark:text-gray-300 hover:text-orange-600 dark:hover:text-orange-400 transition-colors"
-            >
-              {isDarkMode ? <Sun className="w-6 h-6" /> : <Moon className="w-6 h-6" />}
-            </button>
-            
             {/* Owner Dashboard Link (only show if logged in as owner) */}
             {isOwner && (
               <Link
                 href="/owner-dashboard"
-                className={`text-lg font-semibold transition-all duration-300 hover:text-orange-600 dark:hover:text-orange-400 hover:scale-105 ${
+                className={`text-lg font-semibold transition-all duration-300 hover:text-orange-600 hover:scale-105 ${
                   pathname === '/owner-dashboard' 
-                    ? 'text-orange-600 dark:text-orange-400 border-b-2 border-orange-600 dark:border-orange-400' 
-                    : 'text-gray-700 dark:text-gray-300'
+                    ? 'text-orange-600 border-b-2 border-orange-600' 
+                    : 'text-gray-700'
                 }`}
               >
                 Dashboard
@@ -131,7 +102,7 @@ export default function Header() {
             {/* Mobile Cart */}
             <Link
               href="/checkout"
-              className="relative p-2 text-gray-700 dark:text-gray-300"
+              className="relative p-2 text-gray-700"
             >
               <ShoppingCart className="w-6 h-6" />
               {cartCount > 0 && (
@@ -141,19 +112,11 @@ export default function Header() {
               )}
             </Link>
             
-            {/* Mobile Dark Mode Toggle */}
-            <button
-              onClick={toggleDarkMode}
-              className="p-2 text-gray-700 dark:text-gray-300"
-            >
-              {isDarkMode ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
-            </button>
-            
             {/* Mobile Menu Dropdown */}
             <select
               onChange={(e) => window.location.href = e.target.value}
               value={pathname}
-              className="text-sm border border-gray-300 dark:border-gray-600 rounded-md px-3 py-2 bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300"
+              className="text-sm border border-gray-300 rounded-md px-3 py-2 bg-white text-gray-700"
             >
               {navItems.map((item) => (
                 <option key={item.href} value={item.href}>
