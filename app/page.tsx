@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import Image from 'next/image';
-import { restaurants, cuisines } from '@/lib/data';
+import { restaurants, cuisines } from '@/lib/data.ts';
 
 export default function Home() {
   // Get first 4 cuisines for homepage display
