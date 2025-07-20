@@ -1,4 +1,5 @@
-// Mock data for the food court application
+// Simple data for our food court app
+// This contains all the restaurant and menu information
 
 export interface Restaurant {
   id: string;
@@ -42,6 +43,8 @@ export interface Owner {
   restaurantId: string;
   totalRevenue: number;
 }
+
+// All our restaurants with their menus
 export const restaurants: Restaurant[] = [
   {
     id: '1',
@@ -93,30 +96,6 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: '5',
-    name: 'Mama Njeri Kitchen',
-    cuisine: 'Coastal',
-    description: 'Traditional coastal dishes with a homely touch',
-    image: 'https://images.pexels.com/photos/1633578/pexels-photo-1633578.jpeg?auto=compress&cs=tinysrgb&w=400',
-    dishes: [
-      { id: '19', name: 'Pilau Rice', price: 800, description: 'Spiced rice with meat', restaurantId: '7', isPopular: true },
-      { id: '20', name: 'Samosas', price: 150, description: 'Crispy pastries with filling', restaurantId: '7' },
-      { id: '21', name: 'Chapati', price: 50, description: 'Soft flatbread', restaurantId: '7' },
-    ]
-  },
-  {
-    id: '8',
-    name: 'Delhi Delights',
-    cuisine: 'Indian',
-    description: 'North Indian specialties and street food',
-    image: 'https://images.pexels.com/photos/1624487/pexels-photo-1624487.jpeg?auto=compress&cs=tinysrgb&w=400',
-    dishes: [
-      { id: '22', name: 'Chicken Tikka', price: 1400, description: 'Grilled marinated chicken', restaurantId: '8', isPopular: true },
-      { id: '23', name: 'Paneer Curry', price: 1100, description: 'Cottage cheese in spicy gravy', restaurantId: '8' },
-      { id: '24', name: 'Garlic Naan', price: 350, description: 'Garlic flavored bread', restaurantId: '8' },
-    ]
-  },
-  {
-    id: '9',
     name: 'Spice Garden',
     cuisine: 'Indian',
     description: 'Authentic Indian curries and breads',
@@ -141,6 +120,7 @@ export const restaurants: Restaurant[] = [
   },
 ];
 
+// Different types of cuisines available
 export const cuisines = [
   { name: 'Coastal', image: 'https://images.pexels.com/photos/1633578/pexels-photo-1633578.jpeg?auto=compress&cs=tinysrgb&w=400' },
   { name: 'Indian', image: 'https://images.pexels.com/photos/1624487/pexels-photo-1624487.jpeg?auto=compress&cs=tinysrgb&w=400' },
@@ -151,6 +131,7 @@ export const cuisines = [
   { name: 'Japanese', image: 'https://images.pexels.com/photos/357756/pexels-photo-357756.jpeg?auto=compress&cs=tinysrgb&w=400' },
 ];
 
+// Tables available for reservation
 export const tables: Table[] = [
   { id: '1', number: 1, capacity: 4, status: 'available', ownerId: '1' },
   { id: '2', number: 2, capacity: 6, status: 'reserved', ownerId: '1' },
@@ -162,18 +143,9 @@ export const tables: Table[] = [
   { id: '8', number: 8, capacity: 6, status: 'reserved', ownerId: '2' },
   { id: '9', number: 9, capacity: 4, status: 'available', ownerId: '1' },
   { id: '10', number: 10, capacity: 6, status: 'available', ownerId: '2' },
-  { id: '11', number: 11, capacity: 8, status: 'reserved', ownerId: '3' },
-  { id: '12', number: 12, capacity: 4, status: 'available', ownerId: '1' },
-  { id: '13', number: 13, capacity: 6, status: 'available', ownerId: '2' },
-  { id: '14', number: 14, capacity: 4, status: 'reserved', ownerId: '3' },
-  { id: '15', number: 15, capacity: 8, status: 'available', ownerId: '1' },
-  { id: '16', number: 16, capacity: 6, status: 'available', ownerId: '2' },
-  { id: '17', number: 17, capacity: 4, status: 'available', ownerId: '3' },
-  { id: '18', number: 18, capacity: 6, status: 'reserved', ownerId: '1' },
-  { id: '19', number: 19, capacity: 4, status: 'available', ownerId: '2' },
-  { id: '20', number: 20, capacity: 8, status: 'available', ownerId: '3' },
 ];
 
+// Sample customer reviews
 export const reviews: Review[] = [
   {
     id: '1',
@@ -209,14 +181,7 @@ export const reviews: Review[] = [
   }
 ];
 
-export const popularDishes = [
-  { id: '1', name: 'Grilled Chicken', outlet: 'Tamu Tamu Grills', price: 1200 },
-  { id: '4', name: 'Chicken Biryani', outlet: 'Swahili Plates', price: 1000 },
-  { id: '7', name: 'Classic Burger', outlet: 'Burger Bros', price: 800 },
-  { id: '10', name: 'California Roll', outlet: 'Sushi Spot', price: 1200 },
-  { id: '13', name: 'Butter Chicken', outlet: 'Spice Garden', price: 1300 },
-  { id: '16', name: 'Buddha Bowl', outlet: 'Green Bowl', price: 900 },
-];
+// Restaurant owners data
 export const owners: Owner[] = [
   { id: '1', name: 'John Kamau', email: 'john@tamugrills.com', restaurantId: '1', totalRevenue: 125000 },
   { id: '2', name: 'Fatima Hassan', email: 'fatima@swahiliplates.com', restaurantId: '2', totalRevenue: 98000 },
