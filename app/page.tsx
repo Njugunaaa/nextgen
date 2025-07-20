@@ -1,7 +1,6 @@
 'use client';
 
 import Link from 'next/link';
-import Image from 'next/image';
 import { restaurants, cuisines } from '@/lib/data';
 
 export default function Home() {
@@ -12,11 +11,11 @@ export default function Home() {
     <div>
       {/* Hero Section with Background Image */}
       <div className="relative h-96 mb-16 rounded-lg overflow-hidden">
-        <Image
-          src="https://images.pexels.com/photos/1640777/pexels-photo-1640777.jpeg?auto=compress&cs=tinysrgb&w=1200"
-          alt="Food Court"
-          fill
-          className="object-cover"
+        <div 
+          className="absolute inset-0 bg-cover bg-center"
+          style={{
+            backgroundImage: 'url(https://images.pexels.com/photos/1640777/pexels-photo-1640777.jpeg?auto=compress&cs=tinysrgb&w=1200)'
+          }}
         />
         <div className="absolute inset-0 bg-gradient-to-r from-black/60 to-purple-900/60 flex items-center justify-center">
           <div className="text-center text-white px-4">
@@ -51,13 +50,12 @@ export default function Home() {
               href={`/order?outlet=${restaurant.id}`} 
               className="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden hover:shadow-2xl transition-all duration-300 transform hover:scale-105 cursor-pointer"
             >
-              <div className="relative h-56 w-full">
-                <Image
-                  src={restaurant.image}
-                  alt={restaurant.name}
-                  fill
-                  className="object-cover"
-                />
+              <div 
+                className="h-56 w-full bg-cover bg-center"
+                style={{
+                  backgroundImage: `url(${restaurant.image})`
+                }}
+              >
               </div>
               <div className="p-6 text-center">
                 <h3 className="text-xl font-bold text-gray-800 dark:text-white mb-2">
@@ -101,13 +99,12 @@ export default function Home() {
               href={`/browse-cuisines?cuisine=${cuisine.name}`} 
               className="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden hover:shadow-2xl transition-all duration-300 transform hover:scale-105 cursor-pointer"
             >
-              <div className="relative h-32 w-full">
-                <Image
-                  src={cuisine.image}
-                  alt={`${cuisine.name} Cuisine`}
-                  fill
-                  className="object-cover"
-                />
+              <div 
+                className="h-32 w-full bg-cover bg-center"
+                style={{
+                  backgroundImage: `url(${cuisine.image})`
+                }}
+              >
               </div>
               <div className="p-4">
                 <p className="text-lg font-semibold text-gray-800 dark:text-white text-center">
@@ -133,7 +130,7 @@ export default function Home() {
       <div className="grid md:grid-cols-3 gap-8">
         <Link 
           href="/popular-dishes" 
-          className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-8 hover:shadow-2xl transition-all duration-300 transform hover:scale-105 text-center"
+          className="bg-white rounded-xl shadow-lg p-8 hover:shadow-2xl transition-all duration-300 transform hover:scale-105 text-center"
         >
           <h3 className="text-2xl font-bold text-gray-800 dark:text-white mb-4">Popular Dishes</h3>
           <p className="text-lg text-gray-600 dark:text-gray-300">See what everyone's ordering today</p>

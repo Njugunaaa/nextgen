@@ -18,7 +18,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={`${inter.className} bg-gradient-to-br from-orange-50 via-white to-red-50 min-h-screen`}>
+      <body className={`${inter.className} bg-gray-50 min-h-screen`}>
         <Header />
         <main className="max-w-7xl mx-auto px-6 py-12">
           {children}

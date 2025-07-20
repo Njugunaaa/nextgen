@@ -1,7 +1,6 @@
 'use client';
 
 import { useState } from 'react';
-import Image from 'next/image';
 import Link from 'next/link';
 
 export default function Signup() {
@@ -56,11 +55,11 @@ export default function Signup() {
     <div className="min-h-screen flex">
       {/* Left side - Image (hidden on mobile) */}
       <div className="hidden lg:flex lg:w-1/2 relative">
-        <Image
-          src="https://images.pexels.com/photos/1640777/pexels-photo-1640777.jpeg?auto=compress&cs=tinysrgb&w=800"
-          alt="Food Court"
-          fill
-          className="object-cover"
+        <div 
+          className="absolute inset-0 bg-cover bg-center"
+          style={{
+            backgroundImage: 'url(https://images.pexels.com/photos/1640777/pexels-photo-1640777.jpeg?auto=compress&cs=tinysrgb&w=800)'
+          }}
         />
         <div className="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center">
           <div className="text-center text-white">
