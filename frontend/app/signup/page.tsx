@@ -119,7 +119,7 @@ export default function Signup() {
                   value={formData.firstName}
                   onChange={(e) => setFormData({ ...formData, firstName: e.target.value })}
                   className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-amber-500 focus:border-transparent"
-                  placeholder="John"
+                  placeholder="Veroline"
                   required
                 />
               </div>
@@ -132,7 +132,7 @@ export default function Signup() {
                   value={formData.lastName}
                   onChange={(e) => setFormData({ ...formData, lastName: e.target.value })}
                   className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-amber-500 focus:border-transparent"
-                  placeholder="Doe"
+                  placeholder="Ouma"
                   required
                 />
               </div>
@@ -147,7 +147,7 @@ export default function Signup() {
                 value={formData.email}
                 onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-amber-500 focus:border-transparent"
-                placeholder="john@example.com"
+                placeholder="Veroline@example.com"
                 required
               />
             </div>

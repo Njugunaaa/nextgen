@@ -36,20 +36,6 @@ export interface Review {
   date: string;
 }
 
-export interface Owner {
-  id: string;
-  name: string;
-  restaurantName: string;
-  restaurantId: string;
-  cuisineType: string;
-  totalRevenue: number,
-  statsOverview: {
-    totalRevenue: number;
-    pendingOrders: number;
-    popularDishes: number;
-  };
-}
-
 export const restaurants: Restaurant[] = [
   {
     id: '1',
@@ -204,20 +190,5 @@ export const popularDishes = [
     outlet: 'Pizza Haven',
     price: 950,
   },
-];
 
-export const owners: Owner[] = [
-  {
-    id: "owner1",
-    name: "Jeannette",
-    restaurantName: "Jeannette’s Bistro",
-    restaurantId: "1",
-    cuisineType: "Kenyan Cuisine",
-    totalRevenue: 1200000,
-    statsOverview: {
-      totalRevenue: 1200000,
-      pendingOrders: 3,
-      popularDishes: 2,
-    },
-  },
 ];
