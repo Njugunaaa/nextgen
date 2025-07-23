@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useState, useEffect } from 'react';
-import { ShoppingCart, Utensils } from 'lucide-react';
+import { ShoppingCart, Utensils, Moon, Sun, BarChart3, Package, ClipboardList } from 'lucide-react';
 
 export default function Header() {
   const pathname = usePathname();
@@ -11,6 +11,7 @@ export default function Header() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isOwner, setIsOwner] = useState(false);
   const [cartCount, setCartCount] = useState(0);
+  const [darkMode, setDarkMode] = useState(false);
 
   useEffect(() => {
   
@@ -25,18 +26,44 @@ export default function Header() {
         const totalItems = cart.reduce((sum: number, item: any) => sum + item.quantity, 0);
         setCartCount(totalItems);
       }
+
+      const savedDarkMode = localStorage.getItem('darkMode') === 'true';
+      setDarkMode(savedDarkMode);
+      if (savedDarkMode) {
+        document.documentElement.classList.add('dark');
+      }
     }
   }, []);
 
-  const navItems = [
+  const toggleDarkMode = () => {
+    const newDarkMode = !darkMode;
+    setDarkMode(newDarkMode);
+    localStorage.setItem('darkMode', newDarkMode.toString());
+    if (newDarkMode) {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
+  };
+
+  const customerNavItems = [
     { href: '/', label: 'Home' },
-    { href: '/order', label: 'Orders' },
+    { href: '/order', label: 'Order' },
     { href: '/reservations', label: 'Reservations' },
-    { href: '/signup', label: 'Sign Up' },
+    { href: '/login', label: 'Login' },
+    { href: '/checkout', label: 'Checkout' },
   ];
 
+  const ownerNavItems = [
+    { href: '/owner-dashboard', label: 'Overview', icon: BarChart3 },
+    { href: '/owner-analytics', label: 'Analytics', icon: BarChart3 },
+    { href: '/order-management', label: 'Order Management', icon: ClipboardList },
+  ];
+
+  const navItems = isOwner ? ownerNavItems : customerNavItems;
+
   return (
-    <nav className="bg-white shadow-lg border-b border-gray-200 sticky top-0 z-50">
+    <nav className="bg-white dark:bg-gray-900 shadow-lg border-b border-gray-200 dark:border-gray-700 sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-4">
         <div className="flex justify-between items-center h-18">
          
@@ -54,69 +81,71 @@ export default function Header() {
               <Link
                 key={item.href}
                 href={item.href}
-                className={`text-lg font-semibold transition-all duration-300 hover:text-orange-600 hover:scale-105 ${
+                className={`flex items-center space-x-2 text-lg font-semibold transition-all duration-300 hover:text-orange-600 hover:scale-105 ${
                   pathname === item.href 
                     ? 'text-orange-600 border-b-2 border-orange-600' 
-                    : 'text-gray-700'
+                    : 'text-gray-700 dark:text-gray-300'
                 }`}
               >
-                {item.label}
+                {'icon' in item && <item.icon className="w-5 h-5" />}
+                <span>{item.label}</span>
               </Link>
             ))}
             
-            <Link
-              href="/checkout"
-              className="relative p-2 text-gray-700 hover:text-orange-600 transition-colors"
-            >
-              <ShoppingCart className="w-6 h-6" />
-              {cartCount > 0 && (
-                <span className="absolute -top-1 -right-1 bg-orange-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center font-bold">
-                  {cartCount}
-                </span>
-              )}
-            </Link>
-            
-            {isOwner && (
+            {!isOwner && (
               <Link
-                href="/owner-dashboard"
-                className={`text-lg font-semibold transition-all duration-300 hover:text-orange-600 hover:scale-105 ${
-                  pathname === '/owner-dashboard' 
-                    ? 'text-orange-600 border-b-2 border-orange-600' 
-                    : 'text-gray-700'
-                }`}
+                href="/checkout"
+                className="relative p-2 text-gray-700 dark:text-gray-300 hover:text-orange-600 transition-colors"
               >
-                Dashboard
+                <ShoppingCart className="w-6 h-6" />
+                {cartCount > 0 && (
+                  <span className="absolute -top-1 -right-1 bg-orange-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center font-bold">
+                    {cartCount}
+                  </span>
+                )}
               </Link>
             )}
+            
+            <button
+              onClick={toggleDarkMode}
+              className="p-2 text-gray-700 dark:text-gray-300 hover:text-orange-600 transition-colors"
+            >
+              {darkMode ? <Sun className="w-6 h-6" /> : <Moon className="w-6 h-6" />}
+            </button>
           </div>
 
           <div className="md:hidden flex items-center space-x-4">
-            
-            <Link
-              href="/checkout"
-              className="relative p-2 text-gray-700"
+            {!isOwner && (
+              <Link
+                href="/checkout"
+                className="relative p-2 text-gray-700 dark:text-gray-300"
+              >
+                <ShoppingCart className="w-6 h-6" />
+                {cartCount > 0 && (
+                  <span className="absolute -top-1 -right-1 bg-orange-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center font-bold">
+                    {cartCount}
+                  </span>
+                )}
+              </Link>
+            )}
+
+            <button
+              onClick={toggleDarkMode}
+              className="p-2 text-gray-700 dark:text-gray-300"
             >
-              <ShoppingCart className="w-6 h-6" />
-              {cartCount > 0 && (
-                <span className="absolute -top-1 -right-1 bg-orange-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center font-bold">
-                  {cartCount}
-                </span>
-              )}
-            </Link>
+              {darkMode ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
+            </button>
             
             <select
               onChange={(e) => window.location.href = e.target.value}
               value={pathname}
-              className="text-sm border border-gray-300 rounded-md px-3 py-2 bg-white text-gray-700"
+              className="text-sm border border-gray-300 dark:border-gray-600 rounded-md px-3 py-2 bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300"
             >
               {navItems.map((item) => (
                 <option key={item.href} value={item.href}>
                   {item.label}
                 </option>
               ))}
-              {isOwner && (
-                <option value="/owner-dashboard">Dashboard</option>
-              )}
             </select>
           </div>
         </div>

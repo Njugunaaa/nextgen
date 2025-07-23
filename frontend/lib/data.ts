@@ -169,6 +169,53 @@ export const reviews: Review[] = [
   }
 ];
 
+export interface Order {
+  id: string;
+  customerName: string;
+  restaurantId: string;
+  restaurantName: string;
+  items: {
+    dishId: string;
+    name: string;
+    price: number;
+    quantity: number;
+    notes?: string;
+  }[];
+  totalAmount: number;
+  status: 'pending' | 'preparing' | 'ready' | 'delivered';
+  orderTime: string;
+  tableNumber?: string;
+}
+
+export const orders: Order[] = [
+  {
+    id: '1',
+    customerName: 'John Doe',
+    restaurantId: '1',
+    restaurantName: 'Tamu Tamu Grills',
+    items: [
+      { dishId: '1', name: 'Grilled Chicken', price: 1200, quantity: 2 },
+      { dishId: '2', name: 'Beef Kebabs', price: 1500, quantity: 1 }
+    ],
+    totalAmount: 3900,
+    status: 'preparing',
+    orderTime: '2024-01-15T12:30:00Z',
+    tableNumber: '5'
+  },
+  {
+    id: '2',
+    customerName: 'Jane Smith',
+    restaurantId: '2',
+    restaurantName: 'Swahili Plates',
+    items: [
+      { dishId: '4', name: 'Chicken Biryani', price: 1000, quantity: 1 },
+      { dishId: '5', name: 'Coconut Rice', price: 600, quantity: 2 }
+    ],
+    totalAmount: 2200,
+    status: 'ready',
+    orderTime: '2024-01-15T13:15:00Z'
+  }
+];
 
 
 export const popularDishes = [
