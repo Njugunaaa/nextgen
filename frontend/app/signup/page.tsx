@@ -2,9 +2,11 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 
 export default function Signup() {
-  // State for form data
+  const router = useRouter();
+
   const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',
@@ -15,45 +17,41 @@ export default function Signup() {
     userType: 'user'
   });
 
-  // Handle form submission
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     
-    // Validate required fields
     if (!formData.firstName || !formData.lastName || !formData.email || !formData.password) {
       alert('Please fill in all required fields!');
       return;
     }
 
-    // Check if passwords match
     if (formData.password !== formData.confirmPassword) {
       alert('Passwords do not match!');
       return;
     }
 
-    // Check password length
     if (formData.password.length < 6) {
       alert('Password must be at least 6 characters long!');
       return;
     }
 
-    // Handle different user types
     if (formData.userType === 'owner') {
-      // Redirect to owner dashboard
+      
       localStorage.setItem('userType', 'owner');
       localStorage.setItem('userName', `${formData.firstName} ${formData.lastName}`);
       window.location.href = '/owner-dashboard';
     } else {
-      // Regular customer signup
+     
       localStorage.setItem('userType', 'customer');
       localStorage.setItem('userName', `${formData.firstName} ${formData.lastName}`);
-      alert(`User account created for: ${formData.firstName} ${formData.lastName}\nEmail: ${formData.email}\n\nNote: This is a demo - no actual account is created.`);
+      alert(`User account created for: ${formData.firstName} ${formData.lastName}\nEmail: ${formData.email}`);
+      router.push('/order');
     }
   };
 
   return (
     <div className="min-h-screen flex">
-      {/* Left side - Image (hidden on mobile) */}
+      
       <div className="hidden lg:flex lg:w-1/2 relative">
         <div 
           className="absolute inset-0 bg-cover bg-center"
@@ -69,18 +67,16 @@ export default function Signup() {
         </div>
       </div>
 
-      {/* Right side - Sign Up Form */}
       <div className="w-full lg:w-1/2 flex items-center justify-center p-8">
         <div className="max-w-md w-full">
-          {/* Header */}
+         
           <div className="text-center mb-8">
             <h1 className="text-3xl font-bold text-gray-800 mb-2">Create Account</h1>
             <p className="text-gray-600">Join us to start ordering and reserving tables</p>
           </div>
 
-          {/* Sign Up Form */}
           <form onSubmit={handleSubmit} className="space-y-4">
-            {/* User Type Selection */}
+           
             <div className="mb-6">
               <label className="block text-sm font-medium text-gray-700 mb-2">
                 Account Type *
@@ -113,7 +109,6 @@ export default function Signup() {
               </div>
             </div>
 
-            {/* Name Fields */}
             <div className="grid grid-cols-2 gap-4">
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
@@ -124,7 +119,7 @@ export default function Signup() {
                   value={formData.firstName}
                   onChange={(e) => setFormData({ ...formData, firstName: e.target.value })}
                   className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-amber-500 focus:border-transparent"
-                  placeholder="John"
+                  placeholder="Veroline"
                   required
                 />
               </div>
@@ -137,13 +132,12 @@ export default function Signup() {
                   value={formData.lastName}
                   onChange={(e) => setFormData({ ...formData, lastName: e.target.value })}
                   className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-amber-500 focus:border-transparent"
-                  placeholder="Doe"
+                  placeholder="Ouma"
                   required
                 />
               </div>
             </div>
 
-            {/* Email Field */}
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">
                 Email Address *
@@ -153,12 +147,11 @@ export default function Signup() {
                 value={formData.email}
                 onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-amber-500 focus:border-transparent"
-                placeholder="john@example.com"
+                placeholder="Veroline@example.com"
                 required
               />
             </div>
 
-            {/* Phone Field */}
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">
                 Phone Number
@@ -172,7 +165,6 @@ export default function Signup() {
               />
             </div>
 
-            {/* Password Fields */}
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">
                 Password *
@@ -202,19 +194,6 @@ export default function Signup() {
               />
             </div>
 
-            {/* Terms and Conditions */}
-            <div className="flex items-center">
-              <input
-                type="checkbox"
-                className="h-4 w-4 text-amber-600 focus:ring-amber-500 border-gray-300 rounded"
-                required
-              />
-              <label className="ml-2 block text-sm text-gray-700">
-                I agree to the <button type="button" className="text-amber-600 hover:text-amber-500">Terms of Service</button> and <button type="button" className="text-amber-600 hover:text-amber-500">Privacy Policy</button>
-              </label>
-            </div>
-
-            {/* Submit Button */}
             <button
               type="submit"
               className="w-full bg-amber-500 text-white py-3 px-4 rounded-md hover:bg-amber-600 focus:ring-2 focus:ring-amber-500 focus:ring-offset-2 transition-colors font-medium"
@@ -223,22 +202,15 @@ export default function Signup() {
             </button>
           </form>
 
-          {/* Login Link */}
           <div className="mt-6 text-center">
             <p className="text-sm text-gray-600">
               Already have an account?{' '}
               <Link href="/login" className="text-amber-600 hover:text-amber-500 font-medium">
-                Sign in here
+                Log in here
               </Link>
             </p>
           </div>
 
-          {/* Demo Notice */}
-          <div className="mt-8 text-center">
-            <p className="text-xs text-gray-500">
-              ⚠️ This is a demo application. No actual account is created.
-            </p>
-          </div>
         </div>
       </div>
     </div>
