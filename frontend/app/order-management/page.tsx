@@ -1,8 +1,26 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { orders as initialOrders, restaurants, Order } from '@/lib/data';
+import { orders as initialOrders, restaurants } from '@/lib/data';
 import { Clock, CheckCircle, Truck, Package, Trash2 } from 'lucide-react';
+
+interface Order {
+  id: string;
+  customerName: string;
+  restaurantId: string;
+  restaurantName: string;
+  items: {
+    dishId: string;
+    name: string;
+    price: number;
+    quantity: number;
+    notes?: string;
+  }[];
+  totalAmount: number;
+  status: 'pending' | 'preparing' | 'ready' | 'delivered';
+  orderTime: string;
+  tableNumber?: string;
+}
 
 export default function OrderManagement() {
   const [orders, setOrders] = useState<Order[]>(initialOrders);

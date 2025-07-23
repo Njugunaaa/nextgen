@@ -2,7 +2,6 @@
 
 import { useState } from 'react';
 import { orders, restaurants } from '@/lib/data';
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell, LineChart, Line } from 'recharts';
 import { TrendingUp, DollarSign, Package, Users } from 'lucide-react';
 
 export default function OwnerAnalytics() {
@@ -50,17 +49,6 @@ export default function OwnerAnalytics() {
     { name: 'Preparing', value: orders.filter(o => o.status === 'preparing').length, color: '#3b82f6' },
     { name: 'Ready', value: orders.filter(o => o.status === 'ready').length, color: '#10b981' },
     { name: 'Delivered', value: orders.filter(o => o.status === 'delivered').length, color: '#8b5cf6' },
-  ];
-
-  // Daily revenue trend (mock data)
-  const dailyRevenue = [
-    { day: 'Mon', revenue: 15000 },
-    { day: 'Tue', revenue: 18000 },
-    { day: 'Wed', revenue: 22000 },
-    { day: 'Thu', revenue: 19000 },
-    { day: 'Fri', revenue: 28000 },
-    { day: 'Sat', revenue: 35000 },
-    { day: 'Sun', revenue: 31000 },
   ];
 
   return (
@@ -167,58 +155,69 @@ export default function OwnerAnalytics() {
           </div>
         </div>
 
-        {/* Charts */}
+        {/* Restaurant Performance */}
         <div className="grid lg:grid-cols-2 gap-8 mb-8">
-          {/* Revenue by Restaurant */}
           <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
             <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-6">Revenue by Restaurant</h3>
-            <ResponsiveContainer width="100%" height={300}>
-              <BarChart data={revenueByRestaurant}>
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="name" />
-                <YAxis />
-                <Tooltip formatter={(value) => [`KSh ${value.toLocaleString()}`, 'Revenue']} />
-                <Bar dataKey="revenue" fill="#f97316" />
-              </BarChart>
-            </ResponsiveContainer>
+            <div className="space-y-4">
+              {revenueByRestaurant.map((restaurant, index) => (
+                <div key={index} className="flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
+                  <div>
+                    <h4 className="font-medium text-gray-900 dark:text-white">{restaurant.name}</h4>
+                    <p className="text-sm text-gray-600 dark:text-gray-400">{restaurant.orders} orders</p>
+                  </div>
+                  <div className="text-right">
+                    <p className="font-bold text-green-600 dark:text-green-400">
+                      KSh {restaurant.revenue.toLocaleString()}
+                    </p>
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
 
-          {/* Order Status Distribution */}
           <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
             <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-6">Order Status Distribution</h3>
-            <ResponsiveContainer width="100%" height={300}>
-              <PieChart>
-                <Pie
-                  data={statusData}
-                  cx="50%"
-                  cy="50%"
-                  outerRadius={100}
-                  fill="#8884d8"
-                  dataKey="value"
-                  label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
-                >
-                  {statusData.map((entry, index) => (
-                    <Cell key={`cell-${index}`} fill={entry.color} />
-                  ))}
-                </Pie>
-                <Tooltip />
-              </PieChart>
-            </ResponsiveContainer>
+            <div className="space-y-4">
+              {statusData.map((status, index) => (
+                <div key={index} className="flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
+                  <div className="flex items-center space-x-3">
+                    <div 
+                      className="w-4 h-4 rounded-full" 
+                      style={{ backgroundColor: status.color }}
+                    ></div>
+                    <span className="font-medium text-gray-900 dark:text-white">{status.name}</span>
+                  </div>
+                  <span className="text-xl font-bold text-gray-900 dark:text-white">{status.value}</span>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
 
-        {/* Daily Revenue Trend */}
+        {/* Performance Summary */}
         <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
-          <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-6">Daily Revenue Trend</h3>
-          <ResponsiveContainer width="100%" height={400}>
-            <LineChart data={dailyRevenue}>
-              <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="day" />
-              <YAxis />
-              <Tooltip formatter={(value) => [`KSh ${value.toLocaleString()}`, 'Revenue']} />
-              <Line type="monotone" dataKey="revenue" stroke="#f97316" strokeWidth={3} />
-            </LineChart>
-          </ResponsiveContainer>
+          <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-6">Performance Summary</h3>
+          <div className="grid md:grid-cols-3 gap-6">
+            <div className="text-center">
+              <div className="text-3xl font-bold text-blue-600 dark:text-blue-400 mb-2">
+                {Math.round(averageOrderValue)}
+              </div>
+              <p className="text-gray-600 dark:text-gray-300">Average Order Value (KSh)</p>
+            </div>
+            <div className="text-center">
+              <div className="text-3xl font-bold text-green-600 dark:text-green-400 mb-2">
+                {Math.round((completedOrders / totalOrders) * 100)}%
+              </div>
+              <p className="text-gray-600 dark:text-gray-300">Order Completion Rate</p>
+            </div>
+            <div className="text-center">
+              <div className="text-3xl font-bold text-purple-600 dark:text-purple-400 mb-2">
+                {restaurants.length}
+              </div>
+              <p className="text-gray-600 dark:text-gray-300">Active Restaurants</p>
+            </div>
+          </div>
         </div>
       </div>
     </div>

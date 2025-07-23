@@ -169,25 +169,7 @@ export const reviews: Review[] = [
   }
 ];
 
-export interface Order {
-  id: string;
-  customerName: string;
-  restaurantId: string;
-  restaurantName: string;
-  items: {
-    dishId: string;
-    name: string;
-    price: number;
-    quantity: number;
-    notes?: string;
-  }[];
-  totalAmount: number;
-  status: 'pending' | 'preparing' | 'ready' | 'delivered';
-  orderTime: string;
-  tableNumber?: string;
-}
-
-export const orders: Order[] = [
+export const orders = [
   {
     id: '1',
     customerName: 'John Doe',
